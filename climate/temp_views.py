@@ -12,7 +12,7 @@ from .nasa.serializers import NASAWeatherRequestSerializer, GeneralNASAWeatherRe
 from .serializers import ClimateTemperatureSerializer, GeneralClimateSerializer
 import logging
 
-class AggregatedTemperatureView(APIView):
+class AggregatedWeatherView(APIView):
     def post(self, request):
         # Extract nested payloads
         general = request.data.get("general", {})
@@ -34,7 +34,7 @@ class AggregatedTemperatureView(APIView):
 
         if not (open_meteo_valid and nasa_valid and general_valid):
             logging.error(
-                f"❌ Errors AggregatedTemperatureView: "
+                f"❌ Errors AggregatedWeatherView: "
                 f"general={general_serializer.errors}, "
                 f"open_meteo={open_meteo_serializer.errors}, "
                 # f"ncei={ncei_serializer.errors}, "
@@ -96,10 +96,10 @@ class AggregatedTemperatureView(APIView):
                 open_meteo_kwargs=open_meteo_kwargs
             )
 
-            logging.info(f"AggregatedTemperatureView: aggregated count ={len(aggregated)}")
+            logging.info(f"AggregatedWeatherView: aggregated count ={len(aggregated)}")
             serializer = ClimateTemperatureSerializer(aggregated, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            logging.error(f"❌ Error AggregatedTemperatureView: {str(e)}")
+            logging.error(f"❌ Error AggregatedWeatherView: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
