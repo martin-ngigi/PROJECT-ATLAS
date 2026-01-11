@@ -32,3 +32,15 @@ class MonthlyWeatherView(APIView):
             return Response(data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class DailyPrecipitationView(APIView):
+    def post(self, request):
+        serializer = OpenMeteoWeatherRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            logging.error(f"❌ Error DailyPrecipitationView: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = services.get_daily_weather(**serializer.validated_data)
+            return Response(data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

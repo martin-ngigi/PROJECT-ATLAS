@@ -34,15 +34,15 @@ def get_monthly_avg_temperature(parameters, community, latitude, longitude, star
     data =  api_client.get(endpoint, params=params)
 
     # Extract daily temperature data for paramete T2M
-    daily_temps = data["properties"]["parameter"]["T2M"]
+    daily_temps = data["properties"]["parameter"][parameters] #parameters can be T2M,
 
     # Convert to DataFrame for easier manipulation
-    df = pd.DataFrame(list(daily_temps.items()), columns=["date", "temperature"])
+    df = pd.DataFrame(list(daily_temps.items()), columns=["date", "weather_value"])
     df["date"] = pd.to_datetime(df["date"], format="%Y%m%d")
     df.set_index("date", inplace=True)
 
     # Calculate monthly average temperatures
-    monthly_avg = df["temperature"].resample("M").mean()
+    monthly_avg = df["weather_value"].resample("M").mean()
 
     result = {}
     for date, temp in monthly_avg.items():

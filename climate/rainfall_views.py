@@ -55,9 +55,6 @@ class AggregatedTemperatureView(APIView):
             open_meteo_validated_data = open_meteo_serializer.validated_data
             nasa_validated_data = nasa_serializer.validated_data
 
-            climate_type_value = general_kwargs["climate_type"]
-            climate_type_enum = ClimateTypes.get_by_label(climate_type_value)
-
             # Define all default general kwargs in a single map
             open_meteo_general_values = {
                 "longitude": general_kwargs["longitude"],
@@ -82,8 +79,8 @@ class AggregatedTemperatureView(APIView):
             country_code = country_details["countryCode"]
             country_name = country_details["countryName"]
 
-            general_kwargs.setdefault("measurement_unit", climate_type_enum.unit) # i.e. °C
-            general_kwargs.setdefault("unit_standardized", climate_type_enum.unit_name) # i.e. Celsius
+            general_kwargs.setdefault("measurement_unit", general_kwargs["measurement_unit"]) # i.e. Celsius
+            general_kwargs.setdefault("unit_standardized", general_kwargs["unit_standardized"])
             general_kwargs.setdefault("source", "aggregated")
             general_kwargs.setdefault("aggregation_method", "mean")
             general_kwargs.setdefault("country_name", country_name)

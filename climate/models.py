@@ -41,8 +41,8 @@ class Climate(models.Model):
         null=True,
         help_text="Store same as mean_value (but allows flexibility if different calc later)"
     )
-    measurement_unit = models.CharField(max_length=20)
-    unit_standardized = models.CharField(max_length=20, default="Celsius")
+    measurement_unit = models.CharField(blank=True, null=True, max_length=20)
+    unit_standardized = models.CharField(blank=True, null=True, max_length=20)
 
     source = models.CharField(max_length=50, default="aggregated")
     aggregation_method = models.CharField(max_length=50, default="mean")
