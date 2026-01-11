@@ -4,6 +4,27 @@ class ClimateTypes(Enum):
     TEMPERATURE = ("Temperature", "°C", "Celsius")
     PRECIPITATION= ("Precipitation", "mm", "Millimeters")
 
+    HUMIDITY = ("Relative Humidity", "%", "Percentage")
+
+    WIND_SPEED = ("Wind Speed", "m/s", "Meters per second")
+    WIND_DIRECTION = ("Wind Direction", "°", "Degrees")
+
+    ATMOSPHERIC_PRESSURE = ("Atmospheric Pressure", "hPa", "Hectopascals")
+
+    CLOUD_COVER = ("Cloud Cover", "%", "Percentage")
+
+    SOLAR_RADIATION = ("Solar Radiation", "MJ/m²", "Megajoules per square meter")
+
+    VISIBILITY = ("Visibility", "m", "Meters")
+
+    SOIL_MOISTURE = ("Soil Moisture", "m³/m³", "Volumetric water content")
+
+    EVAPOTRANSPIRATION = ("Evapotranspiration", "mm", "Millimeters")
+
+    DEW_POINT = ("Dew Point", "°C", "Celsius")
+
+    UV_INDEX = ("UV Index", "", "Index value")
+
     @property
     def label(self):
         return self.value[0]

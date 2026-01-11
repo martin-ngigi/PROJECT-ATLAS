@@ -7,7 +7,7 @@ import logging
 
 """
 APIView for fetching daily weather data from Open-Meteo API.
-sample url = https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,T2M_MAX,T2M_MIN&community=AG&longitude=1.7471&latitude=40.0573&start=20240101&end=20241231&format=JSON
+sample url = https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M&community=AG&longitude=1.7471&latitude=40.0573&start=20240101&end=20241231&format=JSON
 """
 class NASADailyWeatherView(APIView):
     def post(self, request):
