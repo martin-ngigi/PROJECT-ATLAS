@@ -4,7 +4,7 @@ from rest_framework import status
 
 import utils.country_service
 from utils.date_formater import convert_date_format
-from . import temp_service
+from . import weather_service
 from .ClimateTypesEnum import ClimateTypes
 from .ncei.serializers import NCEIWeatherRequestSerializer
 from .open_meteo.serializers import OpenMeteoWeatherRequestSerializer, GeneralOpenMeteoWeatherRequestSerializer
@@ -12,7 +12,7 @@ from .nasa.serializers import NASAWeatherRequestSerializer, GeneralNASAWeatherRe
 from .serializers import ClimateTemperatureSerializer, GeneralClimateSerializer
 import logging
 
-class AggregatedTemperatureView(APIView):
+class AggregatedWeatherView(APIView):
     def post(self, request):
         # Extract nested payloads
         general = request.data.get("general", {})
@@ -34,7 +34,7 @@ class AggregatedTemperatureView(APIView):
 
         if not (open_meteo_valid and nasa_valid and general_valid):
             logging.error(
-                f"❌ Errors AggregatedTemperatureView: "
+                f"❌ Errors AggregatedWeatherView: "
                 f"general={general_serializer.errors}, "
                 f"open_meteo={open_meteo_serializer.errors}, "
                 # f"ncei={ncei_serializer.errors}, "
@@ -54,6 +54,9 @@ class AggregatedTemperatureView(APIView):
             general_kwargs = general_serializer.validated_data
             open_meteo_validated_data = open_meteo_serializer.validated_data
             nasa_validated_data = nasa_serializer.validated_data
+
+            climate_type_value = general_kwargs["climate_type"]
+            climate_type_enum = ClimateTypes.get_by_label(climate_type_value)
 
             # Define all default general kwargs in a single map
             open_meteo_general_values = {
@@ -79,24 +82,24 @@ class AggregatedTemperatureView(APIView):
             country_code = country_details["countryCode"]
             country_name = country_details["countryName"]
 
-            general_kwargs.setdefault("measurement_unit", general_kwargs["measurement_unit"]) # i.e. Celsius
-            general_kwargs.setdefault("unit_standardized", general_kwargs["unit_standardized"])
+            general_kwargs.setdefault("measurement_unit", climate_type_enum.unit) # i.e. °C
+            general_kwargs.setdefault("unit_standardized", climate_type_enum.unit_name) # i.e. Celsius
             general_kwargs.setdefault("source", "aggregated")
             general_kwargs.setdefault("aggregation_method", "mean")
             general_kwargs.setdefault("country_name", country_name)
             general_kwargs.setdefault("country_code", country_code)
 
-            aggregated = temp_service.aggregare_monthly_avg_temperature(
+            aggregated = weather_service.aggregate_monthly_avg_weather(
                 general_kwargs=general_kwargs,
                 nasa_kwargs=nasa_kwargs,
                 # ncei_kwargs=ncei_serializer.validated_data,
                 open_meteo_kwargs=open_meteo_kwargs
             )
 
-            logging.info(f"AggregatedTemperatureView: aggregated count ={len(aggregated)}")
+            logging.info(f"AggregatedWeatherView: aggregated count ={len(aggregated)}")
             serializer = ClimateTemperatureSerializer(aggregated, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            logging.error(f"❌ Error AggregatedTemperatureView: {str(e)}")
+            logging.error(f"❌ Error AggregatedWeatherView: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

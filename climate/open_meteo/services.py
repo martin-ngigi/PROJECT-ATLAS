@@ -18,7 +18,7 @@ def get_daily_weather(latitude, longitude, start_date, end_date, daily):
     }
     return archive_climate_client.get(endpoint, params=params)
 
-def get_monthly_avg_temperature(latitude, longitude, start_date, end_date, daily):
+def get_monthly_avg_weather(latitude, longitude, start_date, end_date, daily):
     endpoint = "/v1/archive" 
     params = {
         "latitude": latitude,

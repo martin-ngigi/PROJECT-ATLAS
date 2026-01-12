@@ -3,9 +3,9 @@ from django.contrib import admin
 # Register your models here.
 from .models import Climate
 
-# admin.site.register(ClimateTemperature)
+# admin.site.register(ClimateWeatherAdmin)
 @admin.register(Climate)
-class ClimateTemperatureAdmin(admin.ModelAdmin):
+class ClimateWeatherAdmin(admin.ModelAdmin):
     # list_display = ("id", "year", "month", "latitude", "longitude", "mean_value", "created_at")
     list_filter = ("year", "month", "country_name", "country_code", "source")
     search_fields = ("latitude", "longitude", "country_name", "country_code")

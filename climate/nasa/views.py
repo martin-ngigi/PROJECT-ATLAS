@@ -16,7 +16,7 @@ class NASADailyWeatherView(APIView):
             logging.error(f"❌ Error NASADailyWeatherView: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            data = services.get_monthly_temperature(**serializer.validated_data)
+            data = services.get_monthly_weather(**serializer.validated_data)
             return Response(data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -28,7 +28,7 @@ class NASAMonthlyWeatherView(APIView):
             logging.error(f"❌ Error NASAMonthlyWeatherView: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            data = services.get_monthly_avg_temperature(**serializer.validated_data)
+            data = services.get_monthly_avg_weather(**serializer.validated_data)
             return Response(data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

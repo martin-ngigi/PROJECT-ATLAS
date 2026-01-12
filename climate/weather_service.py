@@ -17,16 +17,16 @@ def _normalize_to_df(source_name: str, data: dict) -> pd.DataFrame:
             records.append({"date": month, source_name: value})
     return pd.DataFrame(records).set_index("date")
     
-def aggregare_monthly_avg_temperature(general_kwargs, nasa_kwargs, open_meteo_kwargs):
+def aggregate_monthly_avg_weather(general_kwargs, nasa_kwargs, open_meteo_kwargs):
     """
     Fetch monthly average temperature from NASA, NCEI and Open Meteo,
     aggregate into a singlr DataFrame and save to DB.
     """
 
     # Fetch data from service 
-    nasa_data = nasa_service.get_monthly_avg_temperature(**nasa_kwargs)
+    nasa_data = nasa_service.get_monthly_avg_weather(**nasa_kwargs)
     # ncei_data = ncei_service.get_monthly_avg_temperature(**ncei_kwargs)
-    open_meteo_data = open_meteo_service.get_monthly_avg_temperature(**open_meteo_kwargs)
+    open_meteo_data = open_meteo_service.get_monthly_avg_weather(**open_meteo_kwargs)
 
     # Normalize data to DataFrame
     df_nasa = _normalize_to_df("nasa", nasa_data)

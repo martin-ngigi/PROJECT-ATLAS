@@ -31,7 +31,7 @@ def get_daily_weather(datasetid, datatypeid1, datatypeid2, startdate, enddate, b
     }
     return climate_client.get(endpoint, params=params)
 
-def get_monthly_avg_temperature(datasetid, datatypeid1, datatypeid2, startdate, enddate, bbox, limit=1000):
+def get_monthly_avg_weather(datasetid, datatypeid1, datatypeid2, startdate, enddate, bbox, limit=1000):
     endpoint = "cdo-web/api/v2/data"
     params = {
         "datasetid": datasetid,

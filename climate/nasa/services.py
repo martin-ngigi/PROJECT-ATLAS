@@ -7,7 +7,7 @@ api_client = APIClient(base_url=Constants.NASA_BASE_URL)
 """
 API URL: https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,T2M_MAX,T2M_MIN&community=AG&longitude=1.7471&latitude=40.0573&start=20240101&end=20241231&format=JSON
 """
-def get_monthly_temperature(parameters, community, latitude, longitude, start, end, format):
+def get_monthly_weather(parameters, community, latitude, longitude, start, end, format):
     endpoint = "/api/temporal/daily/point"
     params = {
         "parameters": parameters,
@@ -20,7 +20,7 @@ def get_monthly_temperature(parameters, community, latitude, longitude, start, e
     }
     return api_client.get(endpoint, params=params)
 
-def get_monthly_avg_temperature(parameters, community, latitude, longitude, start, end, format):
+def get_monthly_avg_weather(parameters, community, latitude, longitude, start, end, format):
     endpoint = "/api/temporal/daily/point"
     params = {
         "parameters": parameters,
@@ -33,7 +33,7 @@ def get_monthly_avg_temperature(parameters, community, latitude, longitude, star
     }
     data =  api_client.get(endpoint, params=params)
 
-    # Extract daily temperature data for paramete T2M
+    # Extract daily weather data for paramete T2M
     daily_temps = data["properties"]["parameter"][parameters] #parameters can be T2M,
 
     # Convert to DataFrame for easier manipulation

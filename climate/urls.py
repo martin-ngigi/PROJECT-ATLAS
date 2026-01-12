@@ -2,7 +2,7 @@ from django.urls import path, include
 from .open_meteo.views import OpenMeteoDailyWeatherView, OpenMeteoMonthlyWeatherView, DailyPrecipitationView
 from .ncei.views import NCEIDailyWeatherView, NCEIMonthlyWeatherView
 from .nasa.views import NASADailyWeatherView, NASAMonthlyWeatherView
-from .temp_views import AggregatedWeatherView
+from .weather_views import AggregatedWeatherView
 
 urlpatterns = [
     path("open-meto/", include([
